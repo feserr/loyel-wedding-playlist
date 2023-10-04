@@ -95,10 +95,18 @@ export default function App() {
             {userId !== "" ?
               <>
                 {showError &&
-                  <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Usuario no autorizado.</Alert>}
+                  <div className="container">
+                    <div className="p-2">
+                      <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Usuario no autorizado.</Alert>
+                    </div>
+                  </div>}
                 <Home userId={userId} resetLogin={resetLogin} />
               </> :
-              <Alert variant='info'>Inicia sesión para buscar, canciones y valorar canciones</Alert>
+              <div className="container">
+                <div className="p-2">
+                  <Alert variant='info'>Inicia sesión para buscar, canciones y valorar canciones</Alert>
+                </div>
+              </div>
             }
           </>
         } />
