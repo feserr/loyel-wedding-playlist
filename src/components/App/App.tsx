@@ -62,7 +62,10 @@ export default function App() {
       setCookies("SpotifyAccessToken", accessToken, { maxAge: expiresIn });
       setCookies("SpotifyUserId", result.id, { maxAge: expiresIn });
       setUserId(result.id);
-      axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/${result.id}`);
+      axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/${result.id}`,
+        {
+          spotifyDisplayName: result.name
+        });
     }).catch(() => {
       setShowError(true);
       resetLogin();

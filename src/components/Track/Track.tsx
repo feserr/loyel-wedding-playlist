@@ -91,11 +91,11 @@ export default function Track({ track, userId, onChanged }: TrackProps) {
           <h5 className='card-title cut-text'><a href={track.uri}><FontAwesomeIcon icon={faSpotify} /></a> {track.name}</h5>
           <div className='card-text'>
             <h6 className='cut-text'>{track.artist} | {track.album}</h6>
-            {track.addedByUserId !== "" ? <p className='cut-text'>{track.addedByUserId}</p> : <></>}
+            {track.addedByDisplayName !== "" ? <p className='cut-text'>{track.addedByDisplayName}</p> : <></>}
           </div>
-          {track.addedByUserId !== "" ?
+          {track.addedByDisplayName !== "" ?
             <Row>
-              {track.addedByUserId !== "" ?
+              {track.addedByDisplayName !== "" ?
                 <>
                   <Col xs={{ span: 2, offset: 0 }}>{renderLike()}</Col>
                   <Col xs={{ span: 1, offset: 0 }}>{likedBy.length}</Col>

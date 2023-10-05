@@ -27,6 +27,7 @@ export default function Playlist({ userId }: PlaylistProps) {
         album: track.album,
         artist: track.artist,
         addedByUserId: track.spotifyUserId,
+        addedByDisplayName: track.spotifyDisplayName,
         likes: track.likes,
         disable: true,
       }

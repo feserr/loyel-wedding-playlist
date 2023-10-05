@@ -43,6 +43,7 @@ export default class Spotify {
 				album: track.album.name,
 				uri: track.uri,
 				addedByUserId: "",
+				addedByDisplayName: "",
 				likes: [],
 				disable: false,
 			})

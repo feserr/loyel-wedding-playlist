@@ -25,12 +25,13 @@ export default function Home({ userId, resetLogin }: HomeProps) {
     const tracks = await Promise.all(tracksData.map(async (track) => {
       const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/track/${track.id}`)
         .then(response => response.data)
-        .catch(err => ({ trackInfo: { spotifyUserId: '', likes: [] } }));
+        .catch(err => ({ trackInfo: { spotifyUserId: '', spotifyDisplayName: '', likes: [] } }));
       const trackInfo = data.trackInfo;
 
       return ({
         ...track,
         addedByUserId: trackInfo.spotifyUserId,
+        addedByDisplayName: trackInfo.spotifyDisplayName,
         likes: trackInfo.likes,
         disable
       });
