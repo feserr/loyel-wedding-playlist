@@ -58,14 +58,14 @@ export default function App() {
     const expiresIn = Number(newExpiresIn[1]) * 1000;
 
     Spotify.setToken(accessToken);
-    Spotify.getUserData().then(result => {
-      setCookies("SpotifyAccessToken", accessToken, { maxAge: expiresIn });
-      setCookies("SpotifyUserId", result.id, { maxAge: expiresIn });
-      setUserId(result.id);
-      axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/${result.id}`,
+    Spotify.getUserData().then(async (result) => {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/${result.id}`,
         {
           spotifyDisplayName: result.name
         });
+      setCookies("SpotifyAccessToken", accessToken, { maxAge: expiresIn });
+      setCookies("SpotifyUserId", result.id, { maxAge: expiresIn });
+      setUserId(result.id);
     }).catch(() => {
       setShowError(true);
       resetLogin();
