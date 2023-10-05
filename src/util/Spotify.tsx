@@ -4,7 +4,6 @@ import { SpotifyContext } from "../contexts/SpotifyContext";
 import { useContext } from "react";
 
 const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const redirect_uri = import.meta.env.VITE_REDIRECT_URI;
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -16,7 +15,7 @@ export default class Spotify {
 	}
 
 	static getAccessToken() {
-		const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&show_dialog=true&redirect_uri=${redirect_uri}`;
+		const accessUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&show_dialog=true&redirect_uri=${window.location.href}`;
 		window.location.assign(accessUrl);
 	}
 
