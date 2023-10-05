@@ -36,13 +36,13 @@ export default function Playlist({ userId }: PlaylistProps) {
     setPlaylist(tracks);
   }, [setPlaylist]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const onChanged = async function () {
     fetchData();
   }
+
+  useEffect(() => {
+    onChanged();
+  }, [userId]);
 
   return (
     <div className="container">
