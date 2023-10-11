@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  padding: .88rem;
+  padding: 0.88rem;
   padding-top: 70px;
-  font-family: sans-serif;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
 @media only screen and (max-width: 309px) {

@@ -8,6 +8,7 @@ import Spotify from '../../util/Spotify';
 import { TrackElement } from '../../@types/Track';
 import axios from 'axios';
 import { Alert } from 'react-bootstrap';
+import { baseWeddingBackendClient, weddingBackendClient } from '../../util/ApiClients';
 
 interface HomeProps {
   userId: string;
@@ -19,19 +20,26 @@ export default function Home({ userId, resetLogin }: HomeProps) {
   const [searchResults, setSearchResults] = useState<TrackElement[]>([]);
   const [remaingSongs, setRemainingSongs] = useState(0);
 
-  const setTrackMetadata = async function (tracksData: TrackElement[]) {
-    let disable = remaingSongs == 0;
+  const setTrackMetadata = async (tracksData: TrackElement[], currentRemainingSongs: number, indexToChange: number) => {
+    let disable = currentRemainingSongs == 0;
 
-    const tracks = await Promise.all(tracksData.map(async (track) => {
-      const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/track/${track.id}`)
+    const tracks = await Promise.all(tracksData.map(async (track, index) => {
+      if (indexToChange !== index) {
+        return ({
+          ...track,
+          disable
+        });
+      }
+
+      const data = await baseWeddingBackendClient.get(`/api/track/${track.id}`)
         .then(response => response.data)
-        .catch(err => ({ trackInfo: { spotifyUserId: '', spotifyDisplayName: '', likes: [] } }));
+        .catch(err => ({ trackInfo: { addedById: '', addedByName: '', likes: [] } }));
       const trackInfo = data.trackInfo;
 
       return ({
         ...track,
-        addedByUserId: trackInfo.spotifyUserId,
-        addedByDisplayName: trackInfo.spotifyDisplayName,
+        addedById: trackInfo.addedById,
+        addedByName: trackInfo.addedByName,
         likes: trackInfo.likes,
         disable
       });
@@ -40,39 +48,40 @@ export default function Home({ userId, resetLogin }: HomeProps) {
     setSearchResults(tracks);
   }
 
-  const search = async function (searchTerm: string) {
-    await updateRemainingSongs();
+  const search = async (searchTerm: string) => {
+    const currentRemainingSongs = await updateRemainingSongs();
+
     const tracksData = await Spotify.search(searchTerm)
       .then(results => results)
       .catch(_ => {
         setShowError(true);
-        resetLogin();
       });
-
     if (!tracksData) return;
 
-    setTrackMetadata(tracksData);
+    await setTrackMetadata(tracksData, currentRemainingSongs, -1);
   }
 
-  const updateRemainingSongs = async function () {
-    if (userId === "") {
+  const updateRemainingSongs = async () => {
+    if (userId === '') {
       setRemainingSongs(0);
-      return;
+      return 0;
     }
 
-    const userTracks = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/${userId}`)
+    const userTracks = await weddingBackendClient.get('/api/user')
       .then(response => response.data)
       .catch(err => undefined);
 
-    const currentRemainingSongs = import.meta.env.VITE_MAX_SONGS - userTracks.tracks.length
+    const currentRemainingSongs = import.meta.env.VITE_MAX_SONGS - userTracks.tracks.length;
     setRemainingSongs(currentRemainingSongs);
+    return currentRemainingSongs;
   }
 
-  const onChanged = async function () {
-    updateRemainingSongs()
+  const onChanged = async (index: number) => {
+    const currentRemainingSongs = await updateRemainingSongs();
+    await setTrackMetadata(searchResults, currentRemainingSongs, index);
   }
 
-  const clearSearchResult = function () {
+  const clearSearchResult = () => {
     setSearchResults([]);
   }
 
@@ -86,14 +95,13 @@ export default function Home({ userId, resetLogin }: HomeProps) {
     }
 
     updateRemainingSongs();
-    setTrackMetadata(searchResults);
   }, [showError, remaingSongs, userId]);
 
   return (
     <div className="container">
       <div className="p-2">
         {showError &&
-          <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Inicia la sesión para buscar.</Alert>}
+          <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Error buscando, vuelve a intentarlo.</Alert>}
         <h6>{`Canciones restantes: ${remaingSongs} / ${import.meta.env.VITE_MAX_SONGS}`}</h6>
         <SearchBar onSearch={search} onClearSearchResult={clearSearchResult} />
         <div style={{ paddingTop: '1rem' }}>

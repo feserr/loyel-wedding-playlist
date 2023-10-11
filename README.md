@@ -6,16 +6,11 @@ LoyEl wedding playlist
 # Index
 
 - [Bugs?](#bugs)
-- [Honorable mentions](#honorable-mentions)
 - [License](#license)
 
 ## Bugs?
 
 Please add them to the [Issue Tracker][issues] with as much info as possible, especially source code demonstrating the issue.
-
-## Honorable mentions
-
-* [Neil V.](https://github.com/urbanvas) for [Spotify-React](https://github.com/urbanvas/Spotify-React) which served as sample for this project.
 
 ## License
 -----------------------------------------------------------------------

@@ -8,7 +8,7 @@ import { TrackElement } from '../../@types/Track';
 interface SearchResultsProps {
   userId: string;
   searchResults: TrackElement[];
-  onChanged: () => void;
+  onChanged: (index: number) => void;
 }
 
 export default function SearchResults({ userId, searchResults, onChanged }: SearchResultsProps) {
