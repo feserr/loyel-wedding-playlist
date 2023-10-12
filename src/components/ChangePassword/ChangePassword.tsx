@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Tab, Tabs } from 'react-bootstrap';
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { baseWeddingBackendClient } from '../../util/ApiClients';
 
 export default function ChangePassword() {
   const [showError, setShowError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   const [validated, setValidated] = useState(false);
 
   const location = useLocation();

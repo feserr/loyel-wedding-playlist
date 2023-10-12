@@ -1,13 +1,11 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Tab, Tabs } from 'react-bootstrap';
-import { useCookies } from 'react-cookie';
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import { baseWeddingBackendClient } from '../../util/ApiClients';
 
 export default function ForgotPassword() {
   const [showError, setShowError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [validated, setValidated] = useState(false);
 
@@ -36,16 +34,16 @@ export default function ForgotPassword() {
   }
 
   return (
-    <Container className="p-3 my-5 d-flex flex-column">
+    <Container className='p-3 my-5 d-flex flex-column'>
       <Row className='justify-content-center'>
         <Col xs={0} sm={0} md={7} lg={5}>
-          <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>{errorMsg}</Alert>
+          <Alert show={showError} variant='danger' onClose={() => setShowError(false)} dismissible>{errorMsg}</Alert>
           <Form noValidate validated={validated} onSubmit={handleForgot}>
-            <FloatingLabel className='mb-4' label="Correo electrónico">
-              <Form.Control type="email" placeholder="Correo electrónico" id='email' required />
+            <FloatingLabel className='mb-4' label='Correo electrónico'>
+              <Form.Control type='email' placeholder='Correo electrónico' id='email' required />
             </FloatingLabel>
 
-            <Button className="mb-4 w-100" type='submit'>Continuar</Button>
+            <Button className='mb-4 w-100' type='submit'>Continuar</Button>
           </Form>
         </Col>
       </Row>

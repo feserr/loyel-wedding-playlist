@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Playlist from '../PlayList/PlayList';
 import { Alert, Button } from 'react-bootstrap';
@@ -43,10 +43,11 @@ export default function App() {
               {showError &&
                 <div className='container'>
                   <div className='p-2'>
-                    <Alert show={showError} variant='danger' onClose={() => setShowError(false)} dismissible>Usuario no autorizado.</Alert>
+                    <Alert show={showError} variant='danger' onClose={() => setShowError(false)}
+                      dismissible>Usuario no autorizado.</Alert>
                   </div>
                 </div>}
-              <Home userId={userId} resetLogin={resetLogin} />
+              <Home userId={userId} />
             </> :
             <div className='container'>
               <div className='p-2'>
@@ -54,7 +55,7 @@ export default function App() {
               </div>
             </div>
           }
-        </>,
+        </>
     },
     {
       path: '/signin',
@@ -81,7 +82,7 @@ export default function App() {
   const getUserData = async (userId: string) => {
     const userInfoData = await baseWeddingBackendClient.get(`/api/user/${userId}`)
       .then(response => response.data)
-      .catch(err => setShowError(true));
+      .catch(() => setShowError(true));
     if (!userInfoData) {
       // resetLogin();
       return;

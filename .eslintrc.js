@@ -3,12 +3,19 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   extends: [
-    // "xo",
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/jsx-runtime',
   ],
+  plugins: ['react', '@typescript-eslint'],
   overrides: [
     {
       env: {
@@ -20,20 +27,17 @@ module.exports = {
       },
     },
     {
-      extends: [
-        // "xo-typescript",
-      ],
       files: ['*.ts', '*.tsx'],
     },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json',
   },
-  plugins: ['react'],
   rules: {
     indent: ['error', 2],
     quotes: ['error', 'single'],
-    'max-len': ['error', { code: 100 }],
+    'max-len': ['error', { code: 120 }],
   },
 };

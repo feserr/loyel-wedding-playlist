@@ -6,22 +6,20 @@ import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Spotify from '../../util/Spotify';
 import { TrackElement } from '../../@types/Track';
-import axios from 'axios';
 import { Alert } from 'react-bootstrap';
 import { baseWeddingBackendClient, weddingBackendClient } from '../../util/ApiClients';
 
 interface HomeProps {
   userId: string;
-  resetLogin: () => void;
 }
 
-export default function Home({ userId, resetLogin }: HomeProps) {
+export default function Home({ userId }: HomeProps) {
   const [showError, setShowError] = useState(false);
   const [searchResults, setSearchResults] = useState<TrackElement[]>([]);
   const [remaingSongs, setRemainingSongs] = useState(0);
 
   const setTrackMetadata = async (tracksData: TrackElement[], currentRemainingSongs: number, indexToChange: number) => {
-    let disable = currentRemainingSongs == 0;
+    const disable = currentRemainingSongs == 0;
 
     const tracks = await Promise.all(tracksData.map(async (track, index) => {
       if (indexToChange !== index) {
@@ -33,7 +31,7 @@ export default function Home({ userId, resetLogin }: HomeProps) {
 
       const data = await baseWeddingBackendClient.get(`/api/track/${track.id}`)
         .then(response => response.data)
-        .catch(err => ({ trackInfo: { addedById: '', addedByName: '', likes: [] } }));
+        .catch(() => ({ trackInfo: { addedById: '', addedByName: '', likes: [] } }));
       const trackInfo = data.trackInfo;
 
       return ({
@@ -53,7 +51,7 @@ export default function Home({ userId, resetLogin }: HomeProps) {
 
     const tracksData = await Spotify.search(searchTerm)
       .then(results => results)
-      .catch(_ => {
+      .catch(() => {
         setShowError(true);
       });
     if (!tracksData) return;
@@ -69,7 +67,7 @@ export default function Home({ userId, resetLogin }: HomeProps) {
 
     const userTracks = await weddingBackendClient.get('/api/user')
       .then(response => response.data)
-      .catch(err => undefined);
+      .catch(() => undefined);
 
     const currentRemainingSongs = import.meta.env.VITE_MAX_SONGS - userTracks.tracks.length;
     setRemainingSongs(currentRemainingSongs);
@@ -98,10 +96,11 @@ export default function Home({ userId, resetLogin }: HomeProps) {
   }, [showError, remaingSongs, userId]);
 
   return (
-    <div className="container">
-      <div className="p-2">
+    <div className='container'>
+      <div className='p-2'>
         {showError &&
-          <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Error buscando, vuelve a intentarlo.</Alert>}
+          <Alert show={showError} variant='danger'
+            onClose={() => setShowError(false)} dismissible>Error buscando, vuelve a intentarlo.</Alert>}
         <h6>{`Canciones restantes: ${remaingSongs} / ${import.meta.env.VITE_MAX_SONGS}`}</h6>
         <SearchBar onSearch={search} onClearSearchResult={clearSearchResult} />
         <div style={{ paddingTop: '1rem' }}>

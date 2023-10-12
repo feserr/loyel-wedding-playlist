@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useRef, useState } from 'react';
 import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
@@ -7,10 +6,10 @@ import { baseWeddingBackendClient, weddingBackendClient } from '../../util/ApiCl
 
 export default function SigninRegister() {
   const [showLoginError, setShowLoginError] = useState(false);
-  const [loginErrorMsg, setLoginErrorMsg] = useState("");
+  const [loginErrorMsg, setLoginErrorMsg] = useState('');
 
   const [showRegisterError, setShowRegisterError] = useState(false);
-  const [registerErrorMsg, setRegisterErrorMsg] = useState("");
+  const [registerErrorMsg, setRegisterErrorMsg] = useState('');
 
   const [currentTab, setCurrentTab] = useState('tab1');
 
@@ -71,7 +70,8 @@ export default function SigninRegister() {
         name: event.currentTarget.registerName.value.trim(),
         email: event.currentTarget.registerEmail.value.trim(),
         password: event.currentTarget.registerPassword.value
-      }).catch((err) => {
+      })
+      .catch((err) => {
         setRegisterErrorMsg(err.response.data.message)
         setShowRegisterError(true);
       });
@@ -87,44 +87,48 @@ export default function SigninRegister() {
   }
 
   return (
-    <Container className="p-3 my-5 d-flex flex-column">
+    <Container className='p-3 my-5 d-flex flex-column'>
       <Row className='justify-content-center'>
         <Col xs={0} sm={0} md={7} lg={5}>
-          <Tabs justify className='mb-3 d-flex flex-row justify-content-between' defaultActiveKey='tab1' activeKey={currentTab} onSelect={(key) => { if (key) setCurrentTab(key) }} >
+          <Tabs justify className='mb-3 d-flex flex-row justify-content-between'
+            defaultActiveKey='tab1' activeKey={currentTab} onSelect={(key) => { if (key) setCurrentTab(key) }} >
             <Tab eventKey='tab1' title='Acceder'>
-              <Alert show={showLoginError} variant="danger" onClose={() => setShowLoginError(false)} dismissible>{loginErrorMsg}</Alert>
+              <Alert show={showLoginError} variant='danger'
+                onClose={() => setShowLoginError(false)} dismissible>{loginErrorMsg}</Alert>
               <Form noValidate validated={validatedLogin} onSubmit={handleLogin}>
-                <FloatingLabel className='mb-4' label="Correo electrónico">
-                  <Form.Control type="email" placeholder="Correo electrónico" id='loginEmail' required />
+                <FloatingLabel className='mb-4' label='Correo electrónico'>
+                  <Form.Control type='email' placeholder='Correo electrónico' id='loginEmail' required />
                 </FloatingLabel>
-                <FloatingLabel className='mb-4' label="Contraseña">
-                  <Form.Control type="password" placeholder="Contraseña" id='loginPassword' required />
+                <FloatingLabel className='mb-4' label='Contraseña'>
+                  <Form.Control type='password' placeholder='Contraseña' id='loginPassword' required />
                 </FloatingLabel>
 
-                <div className="d-flex justify-content-between mx-4 mb-4">
-                  <a href="/forgot">Recuperar contraseña</a>
+                <div className='d-flex justify-content-between mx-4 mb-4'>
+                  <a href='/forgot'>Recuperar contraseña</a>
                 </div>
 
-                <Button className="mb-4 w-100" type='submit'>Continuar</Button>
+                <Button className='mb-4 w-100' type='submit'>Continuar</Button>
               </Form>
             </Tab>
             <Tab eventKey='tab2' title='Registrarse'>
-              <Alert show={showRegisterError} variant="danger" onClose={() => setShowRegisterError(false)} dismissible>{registerErrorMsg}</Alert>
-              <Form ref={registerFormRef} noValidate validated={validatedRegister} className='row g-1' onSubmit={handleRegister}>
-                <FloatingLabel className='mb-4' label="Usuario">
-                  <Form.Control type="text" placeholder="Usuario" id='registerName' required />
+              <Alert show={showRegisterError} variant='danger'
+                onClose={() => setShowRegisterError(false)} dismissible>{registerErrorMsg}</Alert>
+              <Form ref={registerFormRef} noValidate validated={validatedRegister}
+                className='row g-1' onSubmit={handleRegister}>
+                <FloatingLabel className='mb-4' label='Usuario'>
+                  <Form.Control type='text' placeholder='Usuario' id='registerName' required />
                 </FloatingLabel>
-                <FloatingLabel className='mb-4' label="Correo electrónico">
-                  <Form.Control type="email" placeholder="Correo electrónico" id='registerEmail' required />
+                <FloatingLabel className='mb-4' label='Correo electrónico'>
+                  <Form.Control type='email' placeholder='Correo electrónico' id='registerEmail' required />
                 </FloatingLabel>
-                <FloatingLabel className='mb-4' label="Contraseña">
-                  <Form.Control type="password" placeholder="Contraseña" id='registerPassword' required />
+                <FloatingLabel className='mb-4' label='Contraseña'>
+                  <Form.Control type='password' placeholder='Contraseña' id='registerPassword' required />
                 </FloatingLabel>
-                <FloatingLabel className='mb-4' label="Repite la contraseña">
-                  <Form.Control type="password" placeholder="Contraseña" id='registerPasswordRepeat' required />
+                <FloatingLabel className='mb-4' label='Repite la contraseña'>
+                  <Form.Control type='password' placeholder='Contraseña' id='registerPasswordRepeat' required />
                 </FloatingLabel>
 
-                <Button className="mb-4 w-100" type='submit'>Continuar</Button>
+                <Button className='mb-4 w-100' type='submit'>Continuar</Button>
               </Form>
             </Tab>
           </Tabs>

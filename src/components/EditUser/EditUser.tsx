@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Alert, Button, Col, Container, FloatingLabel, Form, Row, Tab, Tabs } from 'react-bootstrap';
+import { Alert, Button, Col, Container, FloatingLabel, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import { weddingBackendClient } from '../../util/ApiClients';
 
 export default function EditUser() {
   const [showError, setShowError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   const [validated, setValidated] = useState(false);
 
   const navigate = useNavigate();

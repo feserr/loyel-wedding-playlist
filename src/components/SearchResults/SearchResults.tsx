@@ -1,7 +1,5 @@
 import './SearchResults.css';
 
-import { Form } from 'react-bootstrap';
-
 import TrackList from '../TrackList/TrackList';
 import { TrackElement } from '../../@types/Track';
 

@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import TrackList from '../TrackList/TrackList';
 import { PlaylistData } from '../../@types/PlaylistData';
@@ -17,7 +17,7 @@ export default function Playlist({ userId }: PlaylistProps) {
   const fetchAllData = async () => {
     const data = await baseWeddingBackendClient.get('/api/track/')
       .then((response: AxiosResponse<PlaylistData>) => response.data)
-      .catch(err => undefined);
+      .catch(() => undefined);
     if (!data) return;
 
     const tracks: TrackElement[] = await Promise.all(data.tracks.map(async (track: TrackData) => {
@@ -37,7 +37,7 @@ export default function Playlist({ userId }: PlaylistProps) {
     setPlaylist(tracks);
   }
 
-  const onChanged = async function (_: number) {
+  const onChanged = async function () {
     fetchAllData();
   }
 
