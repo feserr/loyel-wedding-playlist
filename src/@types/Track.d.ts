@@ -5,8 +5,8 @@ export type TrackData = {
   album: string;
   artist: string;
   spotifyTrackId: string;
-  spotifyUserId: string;
-  spotifyDisplayName: string;
+  addedById: string;
+  addedByName: string;
   likes: string[];
   createdAt: string;
   updatedAt: string;
@@ -18,8 +18,8 @@ export type TrackElement = {
   name: string;
   album: string;
   artist: string;
-  addedByUserId: string;
-  addedByDisplayName: string;
+  addedById: string;
+  addedByName: string;
   likes: string[];
   disable: boolean;
 }

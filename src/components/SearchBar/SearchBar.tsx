@@ -1,12 +1,12 @@
 import './SearchBar.css';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { isEmptyOrSpaces } from '../../util/StringUtils';
 
 interface SearchBarProps {
-  onSearch: Function;
-  onClearSearchResult: Function
+  onSearch: (searchTerm: string) => void;
+  onClearSearchResult: () => void
 }
 
 export default function SearchBar({ onSearch, onClearSearchResult }: SearchBarProps) {
@@ -30,7 +30,6 @@ export default function SearchBar({ onSearch, onClearSearchResult }: SearchBarPr
   return (
     <Form onSubmit={e => { e.preventDefault(); }}>
       <Form.Group controlId="formBasicEmail">
-        {/* <Form.Label>Introduce termino de busqueda</Form.Label> */}
         <Form.Control
           type="search"
           name="searchTerm"

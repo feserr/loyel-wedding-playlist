@@ -1,13 +1,14 @@
 {
   "name": "loyel-wedding-playlist",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "homepage": "https://www.lorenayelias.com/playlist",
   "scripts": {
     "dev": "vite --mode dev --host",
     "build": "vite build --mode staging",
     "preview": "vite preview --host",
-    "test": "vite test"
+    "test": "vite test",
+    "lint:check": "eslint --ext .ts,.tsx ./src"
   },
   "browserslist": {
     "production": [
@@ -22,19 +23,20 @@
     ]
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-sandbox/heart": "^1.0.0",
-    "@types/jest": "^29.5.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "axios": "^1.5.0",
-    "bootstrap": "^5.3.1",
+    "@types/jest": "^29.5.5",
+    "@types/react": "^18.2.28",
+    "@types/react-dom": "^18.2.13",
+    "axios": "^1.5.1",
+    "bootstrap": "^5.3.2",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.8.0",
+    "react-bootstrap": "^2.9.0",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
@@ -42,18 +44,18 @@
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
-    "@types/node": "^20.6.0",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.3",
-    "@vitejs/plugin-react": "^4.0.4",
-    "eslint": "^8.50.0",
+    "@types/node": "^20.8.5",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "@vitejs/plugin-react": "^4.1.0",
+    "eslint": "^8.51.0",
     "eslint-config-xo": "^0.43.1",
     "eslint-config-xo-typescript": "^1.0.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.8",
     "typescript": "^5.2.2",
-    "vite": "^4.4.9",
+    "vite": "^4.4.11",
     "vite-tsconfig-paths": "^4.2.1"
   }
 }

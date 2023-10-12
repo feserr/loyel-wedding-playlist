@@ -1,76 +1,73 @@
 import './Track.css';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TrackElement } from '../../@types/Track';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import Heart from '@react-sandbox/heart';
-import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Row } from 'react-bootstrap';
+import { weddingBackendClient } from '../../util/ApiClients';
 
 interface TrackProps {
   track: TrackElement;
+  index: number;
   userId: string;
-  onChanged: () => void;
+  onChanged: (index: number) => void;
 }
 
-export default function Track({ track, userId, onChanged }: TrackProps) {
+export default function Track({ track, index, userId, onChanged }: TrackProps) {
   const [showError, setShowError] = useState(false);
   const [likedBy, setLikedBy] = useState<string[]>([]);
 
   const addTrack = async function (event: React.MouseEvent<HTMLElement>) {
-    const data = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/track/${track.id}`,
+    await weddingBackendClient.post(`/api/track/${track.id}`,
       {
         uri: track.uri,
         name: track.name,
         album: track.album,
-        artist: track.artist,
-        spotifyUserId: userId
+        artist: track.artist
       })
-      .then(response => undefined)
-      .catch(err => setShowError(true));
+      .catch(() => setShowError(true));
 
-    onChanged();
+    onChanged(index);
   }
 
   const removeTrack = async function (event: React.MouseEvent<HTMLElement>) {
-    const data = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/track/${track.id}&${userId}`)
-      .then(response => undefined)
-      .catch(err => undefined);
+    await weddingBackendClient.delete(`/api/track/${track.id}`)
+      .then(() => undefined)
+      .catch(() => undefined);
 
-    onChanged();
+    onChanged(index);
   }
 
   const likeTrack = async function () {
-    if (userId === "") return;
+    if (userId === '') return;
 
-    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/like`,
+    await weddingBackendClient.post('/api/like',
       {
-        spotifyTrackId: track.id,
-        spotifyUserId: userId,
+        spotifyTrackId: track.id
       })
-      .then(response => undefined)
-      .catch(err => undefined);
+      .catch(() => undefined);
 
-    const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/like/${track.id}`,)
+    const data = await weddingBackendClient.get(`/api/like/${track.id}`)
       .then(response => response.data)
-      .catch(err => undefined);
+      .catch(() => undefined);
 
     setLikedBy(data.likes);
   }
 
   const renderAddRemoveAction = function () {
-    if (track.addedByUserId === '') {
+    if (track.addedById === '') {
       return (
-        <Button variant="link" disabled={track.disable} onClick={addTrack}><FontAwesomeIcon icon={faPlus} /></Button>
+        <Button variant='link' disabled={track.disable} onClick={addTrack}><FontAwesomeIcon icon={faPlus} /></Button>
       );
     }
 
-    if (userId === track.addedByUserId) {
+    if (userId === track.addedById) {
       return (
-        <a onClick={removeTrack}><FontAwesomeIcon icon={faTrash} /></a>
+        <Button className='pt-0' variant='link' onClick={removeTrack}><FontAwesomeIcon icon={faTrash} /></Button>
       );
     }
   }
@@ -85,29 +82,30 @@ export default function Track({ track, userId, onChanged }: TrackProps) {
   }, [onChanged])
 
   return (
-    <div className="col">
-      <div className="card">
-        <div className="card-body">
-          <h5 className='card-title cut-text'><a href={track.uri}><FontAwesomeIcon icon={faSpotify} /></a> {track.name}</h5>
+    <div className='col'>
+      <div className='card'>
+        <div className='card-body'>
+          <h5 className='card-title cut-text'><a href={track.uri}>
+            <FontAwesomeIcon icon={faSpotify} /></a> {track.name}
+          </h5>
           <div className='card-text'>
             <h6 className='cut-text'>{track.artist} | {track.album}</h6>
-            {track.addedByDisplayName !== "" ? <p className='cut-text'>{track.addedByDisplayName}</p> : <></>}
+            {track.addedById !== '' ? <p className='cut-text'>{track.addedByName}</p> : <></>}
           </div>
-          {track.addedByDisplayName !== "" ?
+          {track.addedById !== '' ?
             <Row>
-              {track.addedByDisplayName !== "" ?
-                <>
-                  <Col xs={{ span: 2, offset: 0 }}>{renderLike()}</Col>
-                  <Col xs={{ span: 1, offset: 0 }}>{likedBy.length}</Col>
-                </>
-                : <></>}
-              <Col xs={{ span: 2, offset: 6 }}>{renderAddRemoveAction()}</Col>
+              <Col xs={{ span: 2, offset: 0 }}>{renderLike()}</Col>
+              <Col xs={{ span: 1, offset: 0 }}>{likedBy.length}</Col>
+              <Col xs={{ span: 2, offset: 6 }} sm={{ span: 2, offset: 5 }} > {renderAddRemoveAction()}</Col>
             </Row>
             : <>{renderAddRemoveAction()}</>}
         </div>
       </div>
-      {showError &&
-        <Alert show={showError} variant="danger" onClose={() => setShowError(false)} dismissible>Limite excedido.</Alert>}
+      {
+        showError &&
+        <Alert show={showError} variant='danger'
+          onClose={() => setShowError(false)} dismissible>Limite excedido.</Alert>
+      }
     </div >
   );
 }
