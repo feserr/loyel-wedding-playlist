@@ -84,7 +84,6 @@ export default function App() {
       .then(response => response.data)
       .catch(() => setShowError(true));
     if (!userInfoData) {
-      // resetLogin();
       return;
     }
 
@@ -94,12 +93,11 @@ export default function App() {
 
   useEffect(() => {
     if (!cookies.userId || cookies.userId === '') {
-      // resetLogin();
       return;
     }
 
     getUserData(cookies.userId);
-  }, [cookies.userId]);
+  });
 
   return (
     <main>
