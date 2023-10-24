@@ -21,11 +21,14 @@ export default function App() {
   const [cookies, setCookies] = useCookies(['userId']);
   const [userId, setUserId] = useState<string>(cookies.userId);
   const [userName, setUserName] = useState<string>('');
+  const [userColor, setUserColor] = useState<string>('black');
+  const [userMaxSongs, setUserMaxSongs] = useState(import.meta.env.VITE_MAX_SONGS);
 
   const resetLogin = function () {
     setCookies('userId', '', { path: '/' });
     setUserId('');
     setUserName('');
+    setUserColor('black');
   }
 
   const logout = function () {
@@ -47,7 +50,7 @@ export default function App() {
                       dismissible>Usuario no autorizado.</Alert>
                   </div>
                 </div>}
-              <Home userId={userId} />
+              <Home userId={userId} userMaxSongs={userMaxSongs} />
             </> :
             <div className='container'>
               <div className='p-2'>
@@ -79,7 +82,19 @@ export default function App() {
     }
   ]);
 
-  const getUserData = async (userId: string) => {
+  const getUserRoleData = async (userId: string) => {
+    const userRoleData = await baseWeddingBackendClient.get(`/api/role/${userId}`)
+      .then(response => response.data)
+      .catch(() => setShowError(true));
+    if (!userRoleData) {
+      return;
+    }
+
+    setUserMaxSongs(userRoleData.maxSongs);
+    setUserColor(userRoleData.color);
+  }
+
+  const getUserData = async () => {
     const userInfoData = await baseWeddingBackendClient.get(`/api/user/${userId}`)
       .then(response => response.data)
       .catch(() => setShowError(true));
@@ -89,14 +104,11 @@ export default function App() {
 
     setUserId(cookies.userId)
     setUserName(userInfoData.name);
+    getUserRoleData(cookies.userId);
   }
 
   useEffect(() => {
-    if (!cookies.userId || cookies.userId === '') {
-      return;
-    }
-
-    getUserData(cookies.userId);
+    getUserData();
   });
 
   return (
@@ -106,7 +118,7 @@ export default function App() {
           <Navbar.Brand href='/'>Wedding playlist</Navbar.Brand>
           {userName === '' ?
             <Button type='submit' href='/signin'>Acceder</Button> :
-            <NavDropdown title={userName} id='basic-nav-dropdown'>
+            <NavDropdown title={userName} style={{ color: userColor }} id='basic-nav-dropdown'>
               <NavDropdown.Item href='/editUser' >Editar</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logout} >Salir</NavDropdown.Item>

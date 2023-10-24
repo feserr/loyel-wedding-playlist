@@ -8,6 +8,7 @@ export type TrackData = {
   addedById: string;
   addedByName: string;
   likes: string[];
+  userRoleColor: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -21,5 +22,6 @@ export type TrackElement = {
   addedById: string;
   addedByName: string;
   likes: string[];
+  userRoleColor: string;
   disable: boolean;
 }

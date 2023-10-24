@@ -11,9 +11,10 @@ import { baseWeddingBackendClient, weddingBackendClient } from '../../util/ApiCl
 
 interface HomeProps {
   userId: string;
+  userMaxSongs: number
 }
 
-export default function Home({ userId }: HomeProps) {
+export default function Home({ userId, userMaxSongs }: HomeProps) {
   const [showError, setShowError] = useState(false);
   const [searchResults, setSearchResults] = useState<TrackElement[]>([]);
   const [remaingSongs, setRemainingSongs] = useState(0);
@@ -39,6 +40,7 @@ export default function Home({ userId }: HomeProps) {
         addedById: trackInfo.addedById,
         addedByName: trackInfo.addedByName,
         likes: trackInfo.likes,
+        userRoleColor: trackInfo.userRoleColor,
         disable
       });
     }));
@@ -69,7 +71,7 @@ export default function Home({ userId }: HomeProps) {
       .then(response => response.data)
       .catch(() => undefined);
 
-    const currentRemainingSongs = import.meta.env.VITE_MAX_SONGS - userTracks.tracks.length;
+    const currentRemainingSongs = userMaxSongs - userTracks.tracks.length;
     setRemainingSongs(currentRemainingSongs);
     return currentRemainingSongs;
   }
@@ -101,7 +103,7 @@ export default function Home({ userId }: HomeProps) {
         {showError &&
           <Alert show={showError} variant='danger'
             onClose={() => setShowError(false)} dismissible>Error buscando, vuelve a intentarlo.</Alert>}
-        <h6>{`Canciones restantes: ${remaingSongs} / ${import.meta.env.VITE_MAX_SONGS}`}</h6>
+        <h6>{`Canciones restantes: ${remaingSongs} / ${userMaxSongs}`}</h6>
         <SearchBar onSearch={search} onClearSearchResult={clearSearchResult} />
         <div style={{ paddingTop: '1rem' }}>
           <SearchResults userId={userId} searchResults={searchResults} onChanged={onChanged} />

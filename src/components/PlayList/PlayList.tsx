@@ -30,6 +30,7 @@ export default function Playlist({ userId }: PlaylistProps) {
         addedById: track.addedById,
         addedByName: track.addedByName,
         likes: track.likes,
+        userRoleColor: track.userRoleColor,
         disable: true,
       }
     }));

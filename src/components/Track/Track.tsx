@@ -90,7 +90,11 @@ export default function Track({ track, index, userId, onChanged }: TrackProps) {
           </h5>
           <div className='card-text'>
             <h6 className='cut-text'>{track.artist} | {track.album}</h6>
-            {track.addedById !== '' ? <p className='cut-text'>{track.addedByName}</p> : <></>}
+            {track.addedById !== '' ? <p className='cut-text' style={{ color: track.userRoleColor }}>
+              {track.addedByName}
+            </p> :
+              <></>
+            }
           </div>
           {track.addedById !== '' ?
             <Row>
