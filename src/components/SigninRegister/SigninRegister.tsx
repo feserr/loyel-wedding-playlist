@@ -47,6 +47,7 @@ export default function SigninRegister() {
     setCookies('userId', userData.id, { path: '/', });
 
     navigate('/');
+    navigate(0);
   }
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {

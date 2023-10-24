@@ -95,7 +95,7 @@ export default function App() {
   }
 
   const getUserData = async () => {
-    const userInfoData = await baseWeddingBackendClient.get(`/api/user/${userId}`)
+    const userInfoData = await baseWeddingBackendClient.get(`/api/user/${cookies.userId}`)
       .then(response => response.data)
       .catch(() => setShowError(true));
     if (!userInfoData) {
@@ -104,7 +104,7 @@ export default function App() {
 
     setUserId(cookies.userId)
     setUserName(userInfoData.name);
-    getUserRoleData(cookies.userId);
+    await getUserRoleData(cookies.userId);
   }
 
   useEffect(() => {
